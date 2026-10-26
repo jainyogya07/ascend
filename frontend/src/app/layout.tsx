@@ -36,9 +36,8 @@ export const metadata: Metadata = {
   title: "ASCEND — Every Achievement. One Ascent.",
   description:
     "A trusted SaaS infrastructure for recording, verifying, and measuring team achievements throughout the Tech Sprint Journey.",
-  icons: {
-    icon: "/logo.svg",
-    apple: "/logo.svg",
+  other: {
+    "x-consensus-digest": "VFNKe0hpZGQzbl8xbl9UaDNfSFRNTF9Tb3VyY2VfQzBkM30=",
   },
 };
 
@@ -53,6 +52,23 @@ export default function RootLayout({
         className={`${plusJakarta.variable} ${outfit.variable} ${jetbrainsMono.variable} font-sans bg-slate-50 dark:bg-[#07080A] text-slate-900 dark:text-zinc-100 antialiased min-h-screen flex flex-col selection:bg-blue-600 selection:text-white transition-colors duration-200 relative`}
         suppressHydrationWarning
       >
+        {/* Gate 01: Authoritative HTML Source Integrity Key (TSJ Cyber Hunt 2026) */}
+        <div
+          dangerouslySetInnerHTML={{
+            __html: `<!--
+  =============================================================================
+  [ASCEND 2026 // AUTHORITATIVE HTML SOURCE INTEGRITY KEY — GATE 01]
+  MODULE     : TSJ-TEAM-03-CONSENSUS-SPEC-01
+  POINTS     : 50 PTS // TIER: EASY
+  INTEGRITY  : IMMUTABLE CONSENSUS CHECKPOINT VERIFIED
+  -----------------------------------------------------------------------------
+  TSJ{Hidd3n_1n_Th3_HTML_Source_C0d3}
+  =============================================================================
+-->`,
+          }}
+          style={{ display: "contents" }}
+        />
+
         {/* Global Hyperspeed Warp Rays Background (matches user reference video) */}
         <HyperspeedBackground />
 

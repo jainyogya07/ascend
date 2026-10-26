@@ -1,0 +1,8 @@
+# ASCEND Authoritative Crawler Policy & System Restrictions
+User-agent: *
+Allow: /
+Allow: /achievements
+Allow: /leaderboard
+Disallow: /core/audit
+Disallow: /core/queue
+Disallow: /core/audit/verify

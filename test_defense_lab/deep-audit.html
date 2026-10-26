@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCEND // Multi-Factor Optical Authenticator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-wrap">
+            <div class="logo-icon">A</div>
+            <div>
+                <div class="logo-text">ASCEND</div>
+                <div style="font-size: 0.65rem; color: #94a3b8; font-family: 'JetBrains Mono';">SECURITY & VERIFICATION GATEWAY</div>
+            </div>
+        </a>
+
+        <nav class="nav-links">
+            <a href="index.html" class="nav-item">Overview Hub</a>
+            <a href="audit-spec.html" class="nav-item">1. Audit Spec</a>
+            <a href="verifier.html" class="nav-item">2. Verifier Seal</a>
+            <a href="security-gate.html" class="nav-item">3. Security SOC</a>
+            <a href="deep-audit.html" class="nav-item active">4. QR Authenticator</a>
+            <a href="forensics-portal.html" class="nav-item">5. Forensic Lab</a>
+            <a href="scoreboard.html" class="nav-item" style="color: #34d399; border: 1px solid rgba(16,185,129,0.3); background: rgba(16,185,129,0.1);">Consensus Ledger</a>
+        </nav>
+
+        <div class="badge-team">
+            <span></span>
+            TEAM 03 // QR AUTH
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <div class="glass-card">
+            <div class="card-header">
+                <span class="card-title">Multi-Factor Optical Authentication Channel</span>
+                <span class="tag tag-blue">AUTH GATE #04</span>
+            </div>
+            
+            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">
+                High-security optical session handshake. Scan the provisioned matrix below using an authorized verification device to establish a token-verified session channel. Direct navigation without session authorization is rejected by perimeter policy.
+            </p>
+
+            <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                <div style="text-align: center; background: #0c0e14; border: 1px solid var(--border-subtle); padding: 1.75rem; border-radius: 12px;">
+                    <img id="qr-matrix-img" src="assets/auth_qr_matrix.png" alt="Dynamic Verifier QR Matrix" style="width: 160px; height: 160px; border-radius: 8px; border: 1px solid var(--border-glow); filter: drop-shadow(0 0 14px rgba(59, 130, 246, 0.4));">
+                    <div style="margin-top: 1rem; color: #60a5fa; font-family: 'JetBrains Mono'; font-size: 0.75rem; font-weight: 700;">
+                        📱 Optical Verification Matrix
+                    </div>
+                </div>
+
+                <div style="flex: 1; min-width: 300px;" class="code-box">
+                    <div style="color: #60a5fa; font-weight: bold; margin-bottom: 0.5rem;">// OPTICAL CHANNEL TELEMETRY</div>
+                    <div>Protocol  : Optical Session Handshake Matrix v2.4</div>
+                    <div>Asset Path: assets/auth_qr_matrix.png</div>
+                    <div>Correction: Reed-Solomon Level H</div>
+                    <div>State     : Awaiting Provisioned Handshake Route</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; text-align: right;">
+                <a href="forensics-portal.html" class="btn">Proceed to Forensic Lab &rarr;</a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        ASCEND // MULTI-FACTOR OPTICAL AUTHENTICATOR
+    </footer>
+
+</body>
+</html>

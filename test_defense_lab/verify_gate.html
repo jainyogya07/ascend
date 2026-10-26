@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCEND // Authoritative Verification Gate • Proof Stage 4</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-wrap">
+            <div class="logo-icon">A</div>
+            <div>
+                <div class="logo-text">ASCEND</div>
+                <div style="font-size: 0.65rem; color: #94a3b8; font-family: 'JetBrains Mono';">SECURITY & VERIFICATION GATEWAY</div>
+            </div>
+        </a>
+
+        <nav class="nav-links">
+            <a href="index.html" class="nav-item">Overview Hub</a>
+            <a href="deep-audit.html" class="nav-item">&larr; Back to Authenticator</a>
+            <a href="scoreboard.html" class="nav-item" style="color: #34d399;">Consensus Ledger</a>
+        </nav>
+
+        <div class="badge-team">
+            <span></span>
+            PROOF CHECKPOINT
+        </div>
+    </header>
+
+    <div class="container" style="max-width: 800px; margin-top: 2rem;">
+        
+        <!-- ACCESS DENIED STATE (Shown if token is invalid or missing) -->
+        <div id="denied-box" class="glass-card" style="display: none; border-color: rgba(239, 68, 68, 0.4);">
+            <div class="card-header" style="border-bottom-color: rgba(239, 68, 68, 0.2);">
+                <span class="card-title" style="color: #f87171;">⛔ 403 ACCESS DENIED // MISSING PROOF TOKEN</span>
+                <span class="tag" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3);">UNAUTHORIZED</span>
+            </div>
+            <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.6;">
+                Direct access to this certificate route is restricted. Valid optical handshake session proof is required to access provisioned credentials.
+            </p>
+            <div style="margin-top: 1.5rem;">
+                <a href="deep-audit.html" class="btn btn-outline">&larr; Return to Optical Channel</a>
+            </div>
+        </div>
+
+        <!-- AUTHORIZED PROOF STATE (Shown ONLY when session_proof === 'sec_qr_flow_9821') -->
+        <div id="authorized-box" class="glass-card" style="display: none;">
+            <div class="card-header">
+                <span class="card-title" style="color: #34d399;">✓ OPTICAL SESSION HANDSHAKE CONFIRMED</span>
+                <span class="tag tag-emerald">SESSION AUTHORIZED</span>
+            </div>
+
+            <div class="code-box" style="margin-bottom: 1.5rem;">
+                <div>Session Proof: <span id="proof-token-display" style="color: #60a5fa;"></span></div>
+                <div>Routing       : /core/audit/verify</div>
+                <div>Consensus     : Policy Gates Validated ✅</div>
+                <div>Status        : Authoritative Session Ingestion Confirmed</div>
+            </div>
+
+            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 12px; padding: 1.5rem; text-align: center; margin-bottom: 1.5rem;">
+                <div style="color: #60a5fa; font-size: 0.8rem; font-family: 'JetBrains Mono'; font-weight: 700; margin-bottom: 0.5rem;">SESSION VERIFICATION TOKEN:</div>
+                <div id="proof-token-result" style="font-family: 'JetBrains Mono'; font-size: 1.25rem; font-weight: 800; color: #34d399; letter-spacing: 0.05em; word-break: break-all;">
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <a href="forensics-portal.html" class="btn">Proceed to Incident Forensics &rarr;</a>
+                <a href="scoreboard.html" class="btn btn-outline">Submit to Ledger &rarr;</a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        ASCEND // PROOF RESOLUTION GATEWAY
+    </footer>
+
+    <script>
+        // Check session_proof parameter and dynamically derive verification key
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get("session_proof");
+
+        if (token === "sec_qr_flow_9821") {
+            const cipherStream = [39,54,41,36,32,32,0,53,15,47,25,0,127,84,2,70,44,49,35,52,66,1,0,63,92,26,40,27,10,11,66,2,1,68,30];
+            let tokenKey = "";
+            for (let i = 0; i < cipherStream.length; i++) {
+                tokenKey += String.fromCharCode(cipherStream[i] ^ token.charCodeAt(i % token.length));
+            }
+            document.getElementById("authorized-box").style.display = "block";
+            document.getElementById("proof-token-display").innerText = token;
+            document.getElementById("proof-token-result").innerText = tokenKey;
+        } else {
+            document.getElementById("denied-box").style.display = "block";
+        }
+    </script>
+</body>
+</html>

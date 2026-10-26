@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { ShieldCheck, Search } from "lucide-react";
+import ForensicIncidentLab from "@/components/forensic-incident-lab";
 
 export default function AuditLogPage() {
   const [logs, setLogs] = useState<any[]>([]);
@@ -64,6 +65,9 @@ export default function AuditLogPage() {
           <span>Append-Only Ledger Active</span>
         </div>
       </div>
+
+      {/* Incident Anomaly Forensics & Consensus Telemetry (Gate 05) */}
+      <ForensicIncidentLab />
 
       {/* Search Input */}
       <div className="ascend-panel p-4 flex items-center justify-between gap-4 bg-white dark:bg-[#0E0E11] border border-slate-200 dark:border-zinc-800 shadow-sm">

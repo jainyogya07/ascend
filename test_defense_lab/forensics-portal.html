@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCEND // Digital Forensics Incident Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-wrap">
+            <div class="logo-icon">A</div>
+            <div>
+                <div class="logo-text">ASCEND</div>
+                <div style="font-size: 0.65rem; color: #94a3b8; font-family: 'JetBrains Mono';">SECURITY & VERIFICATION GATEWAY</div>
+            </div>
+        </a>
+
+        <nav class="nav-links">
+            <a href="index.html" class="nav-item">Overview Hub</a>
+            <a href="audit-spec.html" class="nav-item">1. Audit Spec</a>
+            <a href="verifier.html" class="nav-item">2. Verifier Seal</a>
+            <a href="security-gate.html" class="nav-item">3. Security SOC</a>
+            <a href="deep-audit.html" class="nav-item">4. QR Authenticator</a>
+            <a href="forensics-portal.html" class="nav-item active">5. Forensic Lab</a>
+            <a href="scoreboard.html" class="nav-item" style="color: #34d399; border: 1px solid rgba(16,185,129,0.3); background: rgba(16,185,129,0.1);">Consensus Ledger</a>
+        </nav>
+
+        <div class="badge-team">
+            <span></span>
+            TEAM 03 // FORENSIC LAB
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <div class="glass-card">
+            <div class="card-header">
+                <span class="card-title">Digital Forensics Incident Investigation</span>
+                <span class="tag tag-emerald">INCIDENT #INC-2026-8891</span>
+            </div>
+            
+            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">
+                Forensic audit trail for inbound threat incident INC-2026-8891. Review gateway telemetry, inspect raw RFC-822 message headers, and execute behavioral sandbox detonation to analyze forensic signatures.
+            </p>
+
+            <!-- STAGE 1: TELEMETRY LOG -->
+            <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <span style="font-weight: 700; font-size: 0.95rem; color: #60a5fa;">Gateway Telemetry Ingestion Log</span>
+                    <span class="tag tag-blue">INGESTION RECORD</span>
+                </div>
+                <div class="code-box">
+                    <div>[AUDIT INCIDENT #8891]: High-urgency domain impersonation attempt flagged by perimeter gateway.</div>
+                    <div style="color: #34d399; font-weight: bold; margin-top: 0.5rem; font-size: 0.9rem;">
+                        Ingestion Reference Digest: TSJ{N3v3r_Tru5t_
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 2: RFC-822 EML FILE -->
+            <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <span style="font-weight: 700; font-size: 0.95rem; color: #fbbf24;">Raw RFC-822 Transport Message</span>
+                    <span class="tag tag-amber">STORED MIME PAYLOAD</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+                    Inbound message preserved in standard RFC-822 format. Inspect message transport headers and MIME attributes:
+                </p>
+                <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+                    <button class="btn btn-outline" onclick="streamEmlHeaders()" style="font-size: 0.8rem; padding: 0.45rem 1rem;">
+                        📜 Stream Headers via Async Pipe
+                    </button>
+                    <a href="artifacts/urgent_security_alert.eml" download="urgent_security_alert.eml" class="btn btn-outline" style="font-size: 0.8rem; padding: 0.45rem 1rem;">
+                        📥 Download Raw .EML File
+                    </a>
+                </div>
+                <div id="streamed-eml-box" class="code-box" style="display: none;"></div>
+            </div>
+
+            <!-- STAGE 3: QEMU SANDBOX DETONATION -->
+            <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <span style="font-weight: 700; font-size: 0.95rem; color: #34d399;">Dynamic Behavioral Containment Sandbox</span>
+                    <span class="tag tag-emerald">EPHEMERAL RUNTIME</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+                    Execute captured payloads in an isolated containment environment to evaluate process memory and behavior:
+                </p>
+                <button class="btn" id="btn-detonate" onclick="detonateSandbox()" style="font-size: 0.85rem;">
+                    ⚡ Detonate in Containment Sandbox
+                </button>
+                <div id="sandbox-result-box" class="code-box" style="display: none; margin-top: 1rem;"></div>
+            </div>
+
+            <div style="margin-top: 1.75rem; text-align: right;">
+                <a href="scoreboard.html" class="btn" style="background: #10b981;">Proceed to Consensus Ledger &rarr;</a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer>
+        ASCEND // DIGITAL FORENSICS INCIDENT LAB
+    </footer>
+
+    <script>
+        // Stream headers asynchronously from external .eml file
+        async function streamEmlHeaders() {
+            const box = document.getElementById("streamed-eml-box");
+            if (box.style.display === "block") {
+                box.style.display = "none";
+                return;
+            }
+            try {
+                const res = await fetch("artifacts/urgent_security_alert.eml");
+                const text = await res.text();
+                box.innerText = text;
+                box.style.display = "block";
+            } catch (e) {
+                box.innerText = "Error streaming artifact. Please use the Download Raw .EML File button.";
+                box.style.display = "block";
+            }
+        }
+
+        // Detonate sandbox
+        function detonateSandbox() {
+            const btn = document.getElementById("btn-detonate");
+            const box = document.getElementById("sandbox-result-box");
+            btn.disabled = true;
+            btn.innerText = "⏳ Sandboxing in Progress...";
+            box.style.display = "block";
+            box.innerHTML = "Initializing isolated QEMU environment...<br/>Analyzing execution behavior...<br/>Zero malicious payloads detected.";
+
+            setTimeout(() => {
+                btn.innerText = "✓ Detonation Analysis Complete";
+                // Dynamic sandbox memory state (XOR masked bytes)
+                const p3 = [203, 228, 184, 251, 187, 245].map(b => String.fromCharCode(b ^ 136)).join('');
+                box.innerHTML += `<br/><br/><span style="color: #60a5fa;">[SANDBOX TELEMETRY LOG]</span>:<br/>Verdict: BENIGN_SPOOF_SAMPLE<br/>Process Closure Signature: <span style="color: #34d399; font-weight: bold; font-size: 1rem;">` + p3 + `</span>`;
+            }, 1200);
+        }
+    </script>
+
+</body>
+</html>

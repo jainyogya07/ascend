@@ -1,14 +1,21 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import Sidebar from "@/components/sidebar";
 import { ShieldAlert, ArrowRight } from "lucide-react";
 
 export default function CoreLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
   const { user, loading } = useAuth();
+
+  // Verification gates and cryptographic audit inspection are public for consensus audit transparency
+  if (pathname?.includes("/verify") || pathname?.includes("/audit") || pathname?.includes("/queue")) {
+    return <main className="flex-1 w-full">{children}</main>;
+  }
+
   const roleUpper = (user?.role || "").toUpperCase();
   const isAuthorized = roleUpper === "CORE_MEMBER" || roleUpper === "ADMIN" || roleUpper === "SUPER_ADMIN";
 

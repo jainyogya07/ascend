@@ -20,6 +20,7 @@ import {
 import { PrismaticGlassCard } from "@/components/react-bits/PrismaticGlassCard";
 import { BorderBeam } from "@/components/react-bits/BorderBeam";
 import { Meteors } from "@/components/react-bits/Meteors";
+import SocPhishingSimulator from "@/components/soc-phishing-simulator";
 
 function VerificationQueueContent() {
   const searchParams = useSearchParams();
@@ -120,6 +121,9 @@ function VerificationQueueContent() {
           />
         </div>
       </div>
+
+      {/* Intercepted Priority Security Anomaly (Gate 03) */}
+      <SocPhishingSimulator />
 
       {/* Queue Table */}
       <div className="rounded-2xl bg-white dark:bg-[#0E0E11] border border-slate-200 dark:border-zinc-800 overflow-hidden shadow-sm">

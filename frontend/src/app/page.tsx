@@ -18,6 +18,7 @@ import BorderBeam from "@/components/react-bits/BorderBeam";
 import GradientText from "@/components/react-bits/GradientText";
 import Meteors from "@/components/react-bits/Meteors";
 import ShimmerButton from "@/components/react-bits/ShimmerButton";
+import SocPhishingSimulator from "@/components/soc-phishing-simulator";
 import {
   ArrowRight,
   ShieldCheck,
@@ -645,6 +646,9 @@ export default function LandingPage() {
                 </p>
               </SpotlightCard>
             </div>
+
+            {/* Live SOC Incident Triage & Human Firewall Simulator (Gate 03) */}
+            <SocPhishingSimulator />
           </div>
         )}
 
@@ -727,8 +731,15 @@ export default function LandingPage() {
       </section>
 
       {/* Official Bottom Line */}
-      <footer className="relative z-10 py-6 px-4 text-center border-t border-slate-200 dark:border-zinc-900 bg-white dark:bg-[#07080A] text-[11px] font-mono text-slate-600 dark:text-zinc-400">
-        ASCEND // AUTHORITATIVE ACHIEVEMENT & VERIFICATION SYSTEM • TECH SPRINT 2026
+      <footer className="relative z-10 py-8 px-4 text-center border-t border-slate-200 dark:border-zinc-900 bg-white dark:bg-[#07080A] text-[11px] font-mono text-slate-500 dark:text-zinc-500 space-y-2">
+        <div>ASCEND // AUTHORITATIVE ACHIEVEMENT & VERIFICATION SYSTEM • TECH SPRINT 2026</div>
+        <div className="flex items-center justify-center gap-3 text-[10px] text-slate-400 dark:text-zinc-600">
+          <Link href="/guide" className="hover:text-slate-600 dark:hover:text-zinc-400 transition">System Spec</Link>
+          <span>•</span>
+          <Link href="/achievements" className="hover:text-slate-600 dark:hover:text-zinc-400 transition">Audit Registry</Link>
+          <span>•</span>
+          <Link href="/core/audit" className="hover:text-slate-600 dark:hover:text-zinc-400 transition">Cryptographic Audit Trail</Link>
+        </div>
       </footer>
     </div>
   );

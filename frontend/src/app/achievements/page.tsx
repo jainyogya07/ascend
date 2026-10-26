@@ -141,6 +141,94 @@ export default function StandaloneAchievementsPage() {
         </div>
       </div>
 
+      {/* Official Verifier Seal & Attestation Registry (Gates 02 & 04) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Card 1: Official Verifier Seal Binary Asset (Gate 02) */}
+        <div className="rounded-2xl bg-slate-50/80 dark:bg-[#0E0E11]/80 border border-slate-200 dark:border-zinc-800 p-5 sm:p-6 backdrop-blur-md shadow-xs flex flex-col justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <div className="relative shrink-0">
+              <img
+                src="/assets/audit_verifier_badge.png"
+                alt="ASCEND Authoritative Verifier Seal"
+                className="w-16 h-16 sm:w-18 sm:h-18 rounded-xl border border-blue-500/30 shadow-md shadow-blue-500/10 object-contain p-1 bg-white dark:bg-[#141418]"
+              />
+              <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white dark:border-[#0E0E11]" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
+                  ASSET #4092
+                </span>
+                <span className="text-[11px] font-mono text-slate-500 dark:text-zinc-400">
+                  SHA-256 Validated Node Seal
+                </span>
+              </div>
+              <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
+                Platform Verifier Seal Binary Registry
+              </h2>
+              <p className="text-xs text-slate-600 dark:text-gray-400 mt-0.5 leading-relaxed">
+                Cryptographic platform seal certifying achievement review integrity. Embedded metadata verifiable against immutable cohort consensus specifications.
+              </p>
+            </div>
+          </div>
+
+          <div className="pt-2 border-t border-slate-200 dark:border-zinc-800/80 flex items-center justify-between">
+            <span className="text-[10px] font-mono text-slate-400 dark:text-zinc-500">
+              Format: PNG • EXIF / tEXt Chunks Preserved
+            </span>
+            <a
+              href="/assets/audit_verifier_badge.png"
+              download="audit_verifier_badge.png"
+              className="px-4 py-2 rounded-xl bg-white dark:bg-[#141418] hover:bg-slate-100 dark:hover:bg-zinc-800 border border-slate-300 dark:border-zinc-700 text-xs font-semibold text-slate-800 dark:text-zinc-200 transition flex items-center gap-2 shadow-xs"
+            >
+              <FileText className="w-3.5 h-3.5 text-blue-500" />
+              <span>Download Binary Seal</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Card 2: Optical QR Attestation Channel (Gate 04) */}
+        <div className="rounded-2xl bg-slate-50/80 dark:bg-[#0E0E11]/80 border border-slate-200 dark:border-zinc-800 p-5 sm:p-6 backdrop-blur-md shadow-xs flex flex-col justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <div className="relative shrink-0 p-1.5 rounded-xl bg-white dark:bg-[#141418] border border-blue-500/30 shadow-md shadow-blue-500/10">
+              <img
+                src="/assets/auth_qr_matrix.png"
+                alt="Optical Tamper-Proof Channel Matrix"
+                className="w-16 h-16 sm:w-18 sm:h-18 object-contain rounded-lg bg-white"
+              />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+                  OPTICAL ATTESTATION
+                </span>
+                <span className="text-[11px] font-mono text-slate-500 dark:text-zinc-400">
+                  Reed-Solomon Level-H Matrix
+                </span>
+              </div>
+              <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
+                Tamper-Proof Certificate Verification
+              </h2>
+              <p className="text-xs text-slate-600 dark:text-gray-400 mt-0.5 leading-relaxed">
+                Scan matrix with a mobile terminal to establish a verified session handshake route. Direct manual navigation without optical handshake is rejected by perimeter policy.
+              </p>
+            </div>
+          </div>
+
+          <div className="pt-2 border-t border-slate-200 dark:border-zinc-800/80 flex items-center justify-between">
+            <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
+              📱 Scan with camera or Lens
+            </span>
+            <Link
+              href="/core/audit/verify"
+              className="text-[11px] font-mono text-blue-600 dark:text-blue-400 hover:underline"
+            >
+              /core/audit/verify &rarr;
+            </Link>
+          </div>
+        </div>
+      </div>
+
       {/* Filter and Search Bar */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="relative w-full sm:w-80">

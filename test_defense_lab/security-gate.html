@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCEND // Security SOC Incident Triage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-wrap">
+            <div class="logo-icon">A</div>
+            <div>
+                <div class="logo-text">ASCEND</div>
+                <div style="font-size: 0.65rem; color: #94a3b8; font-family: 'JetBrains Mono';">SECURITY & VERIFICATION GATEWAY</div>
+            </div>
+        </a>
+
+        <nav class="nav-links">
+            <a href="index.html" class="nav-item">Overview Hub</a>
+            <a href="audit-spec.html" class="nav-item">1. Audit Spec</a>
+            <a href="verifier.html" class="nav-item">2. Verifier Seal</a>
+            <a href="security-gate.html" class="nav-item active">3. Security SOC</a>
+            <a href="deep-audit.html" class="nav-item">4. QR Authenticator</a>
+            <a href="forensics-portal.html" class="nav-item">5. Forensic Lab</a>
+            <a href="scoreboard.html" class="nav-item" style="color: #34d399; border: 1px solid rgba(16,185,129,0.3); background: rgba(16,185,129,0.1);">Consensus Ledger</a>
+        </nav>
+
+        <div class="badge-team">
+            <span></span>
+            TEAM 03 // SOC TRIAGE
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <div class="glass-card">
+            <div class="card-header">
+                <span class="card-title">Security Operations Center // Incident Triage</span>
+                <span class="tag tag-amber">TICKET #SEC-9921</span>
+            </div>
+            
+            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">
+                Live simulated incident triage console. Evaluate incoming high-priority notifications, distinguish between authentic and suspicious events, and dispatch incident mitigation actions.
+            </p>
+
+            <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                    <div style="font-size: 2rem;">⚠️</div>
+                    <div style="flex: 1;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: 700; color: #fde047; font-size: 1rem;">CRITICAL: Immediate Credential Re-Verification Notice</span>
+                            <span class="tag tag-amber">PRIORITY P1</span>
+                        </div>
+                        <p style="color: #cbd5e1; font-size: 0.88rem; margin-top: 0.5rem; line-height: 1.6;">
+                            An anomalous authentication handshake was intercepted from IP 185.220.101.5. Click the link below immediately and re-enter your team credentials to avoid permanent session termination within 15 minutes!
+                        </p>
+                        <div style="margin-top: 1.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                            <button class="btn btn-danger" onclick="alert('⚠️ Security Alert: Unauthorized credential submission blocked. Always verify domain authenticity.')">
+                                Authenticate Access Immediately
+                            </button>
+                            <button class="btn" style="background: #10b981;" onclick="onReportPhishClicked()">
+                                🛡️ Report Suspicious Incident
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DYNAMIC DECRYPTED TOAST -->
+            <div id="phish-result-toast" class="code-box" style="display: none; margin-bottom: 1.5rem;"></div>
+
+            <div style="margin-top: 1.5rem; text-align: right;">
+                <a href="deep-audit.html" class="btn">Proceed to Multi-Factor Authenticator &rarr;</a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        ASCEND // SECURITY SOC INCIDENT TRIAGE
+    </footer>
+
+    <script src="defense_v3.js"></script>
+</body>
+</html>
