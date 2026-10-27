@@ -1,6 +1,17 @@
 // Hardcoded production URL to ensure Vercel uses the Render backend instantly
 const API_BASE = "https://ascend-backend-u64d.onrender.com/api";
 
+type RequestOptions = RequestInit & { skipAuth?: boolean };
+
+export class ApiError extends Error {
+  status: number;
+  constructor(message: string, status = 0) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
 function getToken(): string | null {
   if (typeof window === "undefined") return null;
   return localStorage.getItem("ascend_token");
@@ -18,43 +29,88 @@ export function removeToken() {
   }
 }
 
-async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const token = getToken();
+function formatDetail(detail: unknown, fallback: string): string {
+  if (typeof detail === "string" && detail.trim()) return detail;
+  if (Array.isArray(detail)) {
+    const parts = detail
+      .map((item) => {
+        if (typeof item === "string") return item;
+        if (item && typeof item === "object") {
+          const rec = item as Record<string, unknown>;
+          if (typeof rec.msg === "string") return rec.msg;
+          if (typeof rec.detail === "string") return rec.detail;
+        }
+        return "";
+      })
+      .filter(Boolean);
+    if (parts.length) return parts.join(" ");
+  }
+  if (detail && typeof detail === "object") {
+    const rec = detail as Record<string, unknown>;
+    if (typeof rec.message === "string") return rec.message;
+    if (typeof rec.detail === "string") return rec.detail;
+  }
+  return fallback;
+}
+
+async function request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
+  const { skipAuth, headers: initHeaders, ...fetchOptions } = options;
+  const token = skipAuth ? null : getToken();
   const headers: Record<string, string> = {
-    ...(options.headers as Record<string, string>),
+    ...(initHeaders as Record<string, string>),
   };
 
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  if (!(options.body instanceof FormData)) {
+  if (!(fetchOptions.body instanceof FormData)) {
     headers["Content-Type"] = "application/json";
   }
 
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    ...options,
-    headers,
-  });
-
-  if (!response.ok) {
-    let errorDetail = "An unexpected error occurred.";
-    try {
-      const errJson = await response.json();
-      errorDetail = errJson.detail || JSON.stringify(errJson);
-    } catch {
-      errorDetail = await response.text();
-    }
-    throw new Error(errorDetail);
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE}${endpoint}`, {
+      ...fetchOptions,
+      headers,
+    });
+  } catch {
+    throw new ApiError(
+      "Cannot reach ASCEND servers. If the site just opened, wait a few seconds and try again.",
+      0
+    );
   }
 
-  return response.json();
+  const raw = await response.text();
+
+  if (!response.ok) {
+    let errorDetail =
+      response.status >= 500
+        ? "Server is waking up or unavailable. Please wait a moment and try again."
+        : "An unexpected error occurred.";
+    try {
+      const errJson = raw ? JSON.parse(raw) : {};
+      errorDetail = formatDetail(errJson.detail ?? errJson.message ?? errJson, errorDetail);
+    } catch {
+      if (raw && response.status < 500) {
+        errorDetail = raw.slice(0, 180);
+      }
+    }
+    throw new ApiError(errorDetail, response.status);
+  }
+
+  if (!raw) return {} as T;
+  try {
+    return JSON.parse(raw) as T;
+  } catch {
+    throw new ApiError("Server returned an invalid response. Please try again.", response.status);
+  }
 }
 
 export const api = {
   // Auth & Access Control
   login: (data: { email: string; password: string }) =>
-    request<any>("/auth/login", { method: "POST", body: JSON.stringify(data) }),
+    request<any>("/auth/login", { method: "POST", body: JSON.stringify(data), skipAuth: true }),
   register: (data: {
     name: string;
     email: string;
@@ -67,6 +123,7 @@ export const api = {
     request<{ message: string; status: string; email: string }>("/auth/register", {
       method: "POST",
       body: JSON.stringify(data),
+      skipAuth: true,
     }),
   requestOtp: (
     dataOrEmail:
@@ -85,6 +142,7 @@ export const api = {
     return request<{ message: string; email: string; status: string; dev_otp?: string }>("/auth/request-otp", {
       method: "POST",
       body: JSON.stringify(body),
+      skipAuth: true,
     });
   },
   getDevOtpHint: (email: string) =>
@@ -93,6 +151,7 @@ export const api = {
     request<{ access_token: string; token_type: string; status: string; role: string; user: any }>("/auth/verify-otp", {
       method: "POST",
       body: JSON.stringify({ email, otp }),
+      skipAuth: true,
     }),
   getAccessStatus: () =>
     request<{ status: string; role: string; name: string; email: string }>("/auth/access-status"),
@@ -100,6 +159,7 @@ export const api = {
     request<{ access_token: string; token_type: string; user: any; redirect_url: string }>("/auth/access-code/verify", {
       method: "POST",
       body: JSON.stringify({ access_code }),
+      skipAuth: true,
     }),
   getMyAccessCode: () =>
     request<{ access_code: string }>("/auth/access-code"),
@@ -107,16 +167,18 @@ export const api = {
     if (!getToken()) return Promise.resolve(null);
     return request<any>("/auth/me");
   },
-  getDemoAccounts: () => request<any[]>("/auth/demo-accounts"),
+  getDemoAccounts: () => request<any[]>("/auth/demo-accounts", { skipAuth: true }),
   forgotPassword: (email: string) =>
     request<{ message: string; email: string; dev_otp?: string }>("/auth/forgot-password", {
       method: "POST",
       body: JSON.stringify({ email }),
+      skipAuth: true,
     }),
   resetPassword: (data: { email: string; otp?: string; new_password: string }) =>
     request<{ message: string }>("/auth/reset-password", {
       method: "POST",
       body: JSON.stringify(data),
+      skipAuth: true,
     }),
 
   // Admin Access Control Queue

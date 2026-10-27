@@ -1,7 +1,7 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { api, setToken, removeToken } from "./api";
+import React, { createContext, useContext, useState, useEffect, useRef } from "react";
+import { api, setToken, removeToken, ApiError } from "./api";
 
 export type UserRole = "MEMBER" | "CORE_MEMBER" | "ADMIN";
 
@@ -60,13 +60,22 @@ function normalizeUser(u: any): User | null {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+function persistUser(user: User) {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("ascend_user", JSON.stringify(user));
+  }
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [demoAccounts, setDemoAccounts] = useState<DemoAccount[]>([]);
+  const sessionGen = useRef(0);
 
   // Initialize cached session synchronously to avoid layout flicker
   useEffect(() => {
+    const bootstrapGen = sessionGen.current;
+
     if (typeof window !== "undefined") {
       const cached = localStorage.getItem("ascend_user");
       if (cached) {
@@ -91,16 +100,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (token) {
       api.getMe()
         .then((userData) => {
+          if (sessionGen.current !== bootstrapGen) return;
           if (userData) {
             const norm = normalizeUser(userData);
-            setUser(norm);
-            if (typeof window !== "undefined") {
-              localStorage.setItem("ascend_user", JSON.stringify(norm));
+            if (norm) {
+              setUser(norm);
+              persistUser(norm);
             }
           }
         })
-        .catch(() => {
-          // Expired or invalid token
+        .catch((err) => {
+          // A failed leftover session check must never wipe a sign-in that just succeeded.
+          if (sessionGen.current !== bootstrapGen) return;
+          const current = typeof window !== "undefined" ? localStorage.getItem("ascend_token") : null;
+          if (current !== token) return;
+
+          const status = err instanceof ApiError ? err.status : 0;
+          // Keep the cached session on network / 5xx blips. Only drop it on real auth failure.
+          if (status !== 401 && status !== 403) return;
+
           removeToken();
           if (typeof window !== "undefined") {
             localStorage.removeItem("ascend_user");
@@ -108,7 +126,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUser(null);
         })
         .finally(() => {
-          setLoading(false);
+          if (sessionGen.current === bootstrapGen) {
+            setLoading(false);
+          }
         });
     } else {
       setLoading(false);
@@ -116,35 +136,53 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string): Promise<User> => {
+    sessionGen.current += 1;
     const res = await api.login({ email, password });
-    setToken(res.access_token);
-    const norm = normalizeUser(res.user)!;
-    setUser(norm);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("ascend_user", JSON.stringify(norm));
+    if (!res?.access_token) {
+      throw new Error("Sign-in failed. Please try again.");
     }
+    const norm = normalizeUser(res.user);
+    if (!norm) {
+      throw new Error("Signed in, but the account payload was invalid. Please try again.");
+    }
+    setToken(res.access_token);
+    setUser(norm);
+    persistUser(norm);
+    setLoading(false);
     return norm;
   };
 
   const loginWithOtp = async (email: string, otp: string): Promise<{ user: User; status: string }> => {
+    sessionGen.current += 1;
     const res = await api.verifyOtp(email, otp);
-    setToken(res.access_token);
-    const norm = normalizeUser(res.user)!;
-    setUser(norm);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("ascend_user", JSON.stringify(norm));
+    if (!res?.access_token) {
+      throw new Error("Verification failed. Please try again.");
     }
+    const norm = normalizeUser(res.user);
+    if (!norm) {
+      throw new Error("Signed in, but the account payload was invalid. Please try again.");
+    }
+    setToken(res.access_token);
+    setUser(norm);
+    persistUser(norm);
+    setLoading(false);
     return { user: norm, status: res.status };
   };
 
   const loginWithAccessCode = async (code: string): Promise<{ user: User; redirectUrl: string }> => {
+    sessionGen.current += 1;
     const res = await api.verifyAccessCode(code);
-    setToken(res.access_token);
-    const norm = normalizeUser(res.user)!;
-    setUser(norm);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("ascend_user", JSON.stringify(norm));
+    if (!res?.access_token) {
+      throw new Error("Access code sign-in failed. Please try again.");
     }
+    const norm = normalizeUser(res.user);
+    if (!norm) {
+      throw new Error("Signed in, but the account payload was invalid. Please try again.");
+    }
+    setToken(res.access_token);
+    setUser(norm);
+    persistUser(norm);
+    setLoading(false);
     return { user: norm, redirectUrl: res.redirect_url };
   };
 
@@ -163,6 +201,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const loginWithDemo = (account: DemoAccount) => {
+    sessionGen.current += 1;
     setToken(account.access_token);
     const personaUser: User = {
       id: account.id,
